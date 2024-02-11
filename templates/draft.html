@@ -1,0 +1,150 @@
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Google Font Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'styles.css' %}"/>
+    <title>Jom Mail | Draft</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'compose.css' %}">
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  </head>
+  <body>
+    <!-- Header Starts -->
+    <div class="header">
+      <div class="header__left">
+        <span class="material-icons"> menu </span>
+       <h2>Jom Mail</h2>
+      </div>
+
+      <div class="header__middle">
+        <span class="material-icons"> search </span>
+        <input type="text" placeholder="Search mail" />
+        <span class="material-icons"> arrow_drop_down </span>
+      </div>
+
+      <div class="header__right">
+       
+        <span class="material-icons" style="font-size:40px;"> account_circle </span>
+      </div>
+    </div>
+    <!-- Header Ends -->
+
+    <!-- Main Body Starts -->
+    <div class="main__body">
+      <!-- Sidebar Starts -->
+      <div class="sidebar">
+        <button class="sidebar__compose" id="composeButton"><span class="material-icons"> add </span>Compose</button>
+        <div class="sidebarOption" onclick="window.location.href='/'">
+          <span class="material-icons"> inbox </span>
+          <h3>Inbox</h3>
+        </div>
+
+        <div class="sidebarOption">
+          <span class="material-icons"> star </span>
+          <h3>Starred</h3>
+        </div>
+
+
+        <div class="sidebarOption" onclick="window.location.href='/mail/sent'">
+          <span class="material-icons"> near_me </span>
+          <h3>Sent</h3>
+        </div>
+
+        <div class="sidebarOption sidebarOption__active" onclick="window.location.href='/mail/sent?type_=draft'">
+          <span class="material-icons"> note </span>
+          <h3>Drafts</h3>
+        </div>
+
+        <div class="sidebarOption">
+            <span class="material-icons"> logout </span>
+            <h3>Logout</h3>
+          </div>
+
+        
+        
+      </div>
+      <!-- Sidebar Ends -->
+
+      <!-- Email List Starts -->
+      <div class="emailList">
+        <!-- Settings Starts -->
+        <div class="emailList__settings">
+          
+        </div>
+        <!-- Settings Ends -->
+
+       
+
+        {% for email in emails %}
+
+        <!-- Email List rows starts -->
+        <div class="emailList__list" onclick="window.location.href='/mail/{{email.id}}'">
+          <!-- Email Row Starts -->
+          <div class="emailRow">
+            <div class="emailRow__options">
+              
+              <span class="material-icons"> label_important </span>
+            </div>
+
+            <h3 class="emailRow__title">{{email.to_email}}</h3>
+
+            <div class="emailRow__message">
+              <h6>
+                {{email.subject}}
+                <span class="emailRow__description"></span>
+              </h6>
+            </div>
+
+            <p class="emailRow__time">{{email.created_at}}</p>
+          </div>
+          <!-- Email Row Ends -->
+
+          {% endfor %}
+
+        
+
+            <div id="emailPopup" class="popup">
+              <div class="popup-content">
+                <span class="close">&times;</span>
+                <h4>Compose New Email</h4>
+                <form action="/mail/new-email/" method="POST">
+                  {% csrf_token %}
+                  <input type="text" placeholder="subject" class="form-control" name="subject" required><br>
+                  <input type="email" placeholder="to" class="form-control" name="to" required><br>
+                  <textarea name="content" class="form-control txtarea" cols="30" rows="10" placeholder="Content"></textarea><br>
+                  <div style="display: flex;">
+                    <button class="btn btn-primary">Send Mail</button>
+                    <div  style="margin-top: 5px;margin-left: 15px;">
+                      <span class="material-icons"> micro </span>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+         
+            <script>
+              document.getElementById("composeButton").onclick = function() {
+                document.getElementById("emailPopup").style.display = "block";
+              };
+
+              document.querySelector(".close").onclick = function() {
+                document.getElementById("emailPopup").style.display = "none";
+              };
+
+            </script>
+
+          
+        </div>
+        <!-- Email List rows Ends -->
+      </div>
+      <!-- Email List Ends -->
+    </div>
+    <!-- Main Body Ends -->
+  </body>
+</html>
