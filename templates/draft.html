@@ -110,35 +110,93 @@
 
         
 
-            <div id="emailPopup" class="popup">
-              <div class="popup-content">
-                <span class="close">&times;</span>
-                <h4>Compose New Email</h4>
-                <form action="/mail/new-email/" method="POST">
-                  {% csrf_token %}
-                  <input type="text" placeholder="subject" class="form-control" name="subject" required><br>
-                  <input type="email" placeholder="to" class="form-control" name="to" required><br>
-                  <textarea name="content" class="form-control txtarea" cols="30" rows="10" placeholder="Content"></textarea><br>
+           
+          <div id="emailPopup" class="popup">
+            <div class="popup-content">
+              <span class="close">&times;</span>
+              <h4>Compose New Email</h4>
+              <form action="/mail/new-email/" method="POST">
+                {% csrf_token %}
+                <input type="text" placeholder="subject" class="form-control" name="subject" required><br>
+                <input type="email" placeholder="to" class="form-control" name="to" required><br>
+                <textarea name="content" id="textInput" class="form-control txtarea" cols="30" rows="10" placeholder="Content"></textarea><br>
+                
+                <p id="log"></p>
+                <div style="display: flex;">
                   <div style="display: flex;">
-                    <button class="btn btn-primary">Send Mail</button>
-                    <div  style="margin-top: 5px;margin-left: 15px;">
-                      <span class="material-icons"> micro </span>
-                    </div>
+                  <button class="btn btn-primary" onclick="showToast('Email Sent',3000)">Send Mail</button>
+                  <div  style="margin-top: 5px;margin-left: 15px;">
+                    <span class="material-icons" id="toggleRecording"> micro </span>
                   </div>
-                </form>
-              </div>
+                </div>
+                 
+                </div>
+              </form>
             </div>
-         
-            <script>
-              document.getElementById("composeButton").onclick = function() {
-                document.getElementById("emailPopup").style.display = "block";
+          </div>
+       
+          <script>
+            document.getElementById("composeButton").onclick = function() {
+              document.getElementById("emailPopup").style.display = "block";
+            };
+
+            document.querySelector(".close").onclick = function() {
+              document.getElementById("emailPopup").style.display = "none";
+            };
+
+            function showToast(message,duration){
+              Toastify({
+                  text: message,
+                  duration: duration,
+                  close: true
+              }).showToast();
+            }
+
+
+            // Voice capture and processing
+            // Check if browser supports the Web Speech API
+            if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+              const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+              let isRecording = false;
+
+              // Set continuous to true to keep listening
+              recognition.continuous = true;
+
+              // Handle the recognized result
+              recognition.onresult = function(event) {
+                  const last = event.results.length - 1;
+                  const text = event.results[last][0].transcript;
+
+                  // Log the recognized text to the console
+                  console.log('Recognized Text:', text);
+
+                  // Set the recognized text to the input field
+                  document.getElementById('textInput').value += text;
               };
 
-              document.querySelector(".close").onclick = function() {
-                document.getElementById("emailPopup").style.display = "none";
-              };
+              // Toggle recording when the button is clicked
+              var log = document.getElementById('log');
+              document.getElementById('toggleRecording').addEventListener('click', function() {
+                  if (isRecording) {
+                      recognition.stop();
+                      isRecording = false;
+                      console.log('Speech recognition stopped');
+                      log.innerText = 'Speech recognition stopped';
+                  } else {
+                      recognition.start();
+                      isRecording = true;
+                      console.log('Speech recognition started');
+                      log.innerText = 'Speech recognition started';
+                  }
+              });
+          } else {
+              // Web Speech API not supported, handle the error
+              alert('Your browser does not support Web Speech API');
+          }
 
-            </script>
+
+          </script>
+
 
           
         </div>

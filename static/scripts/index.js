@@ -36,6 +36,7 @@ function handleKeyPress(event) {
 // Speech to Text Code
 
 function startListening(inp) {
+    alert("Lisiting..")
     recognition = new webkitSpeechRecognition(); // Chrome requires 'webkit' prefix
     recognition.lang = 'en-US'; // Language for recognition
     recognition.onstart = function() {
@@ -66,7 +67,7 @@ function stopListening(inp) {
         recognition.stop();
         console.log("sub "+inp)
         if(inp == 'sub'){
-            speak("Ok what is the Message?");
+            // speak("Ok what is the Message?");
             startListening("msg");
         }
         else if(inp == 'msg'){

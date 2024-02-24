@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 from .models import History
+from accounts.models import Account
 
 # Create your views here.
 @method_decorator(login_required, name='dispatch')
@@ -17,13 +18,15 @@ class CreateNewMail(View):
         to_email = request.POST.get("to")
         content = request.POST.get("content")
 
+        acc = Account.objects.get(user=request.user)
+
         data = {
             "subject":subject,
             "to_email":to_email,
             "context":{
                 "message":content
             },
-            "api_key":settings.SUPERSENT_API_KEY
+            "api_key":acc.api_key
         }
         History.objects.create(user=request.user,subject=subject,content=content,to_email=to_email)
         res = requests.post(url=settings.SUPERSENT_URL,headers={},json=data)
