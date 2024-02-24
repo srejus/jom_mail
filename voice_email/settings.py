@@ -32,6 +32,7 @@ INSTALLED_APPS = [
 
     'mail',
     'home',
+    'accounts',
 ]
 
 MIDDLEWARE = [

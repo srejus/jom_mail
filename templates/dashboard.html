@@ -7,7 +7,7 @@
     <!-- Google Font Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <link rel="stylesheet" href="{% static 'styles.css' %}"/>
-    <title>Jom Mail | Sent</title>
+    <title>Jom Mail</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
     <link rel="stylesheet" href="{% static 'compose.css' %}">
 
@@ -41,18 +41,18 @@
       <!-- Sidebar Starts -->
       <div class="sidebar">
         <button class="sidebar__compose" id="composeButton"><span class="material-icons"> add </span>Compose</button>
-        <div class="sidebarOption" onclick="window.location.href='/dashboard'">
+        <div class="sidebarOption sidebarOption__active">
           <span class="material-icons"> inbox </span>
           <h3>Inbox</h3>
         </div>
 
-        <div class="sidebarOption">
+        <div class="sidebarOption" onclick="window.location.href='/mail/sent?type_=star'">
           <span class="material-icons"> star </span>
           <h3>Starred</h3>
         </div>
 
 
-        <div class="sidebarOption sidebarOption__active" onclick="window.location.href='/mail/sent'">
+        <div class="sidebarOption" onclick="window.location.href='/mail/sent'">
           <span class="material-icons"> near_me </span>
           <h3>Sent</h3>
         </div>
@@ -80,35 +80,31 @@
         </div>
         <!-- Settings Ends -->
 
-       {% for email in emails %}
+       
 
         <!-- Email List rows starts -->
-        <div class="emailList__list" onclick="window.location.href='/mail/{{email.id}}'">
+        <div class="emailList__list">
           <!-- Email Row Starts -->
-          <div class="emailRow">
+          <!-- <div class="emailRow">
             <div class="emailRow__options">
               
               <span class="material-icons"> label_important </span>
             </div>
 
-            <h3 class="emailRow__title">{{email.to_email}}</h3>
+            <h3 class="emailRow__title">YouTube</h3>
 
             <div class="emailRow__message">
               <h6>
-                {{email.subject}}
-                <span class="emailRow__description"></span>
+                You Got a New Subscriber
+                <span class="emailRow__description"> - on Your Channel Future Coders </span>
               </h6>
             </div>
 
             <p class="emailRow__time">{{email.created_at}}</p>
-          </div>
+          </div> -->
           <!-- Email Row Ends -->
 
-          
-
-          
-        </div>
-        {% endfor %}
+        
 
             <div id="emailPopup" class="popup">
               <div class="popup-content">
@@ -118,12 +114,15 @@
                   {% csrf_token %}
                   <input type="text" placeholder="subject" class="form-control" name="subject" required><br>
                   <input type="email" placeholder="to" class="form-control" name="to" required><br>
-                  <textarea name="content" class="form-control txtarea" cols="30" rows="10" placeholder="Content" required></textarea><br>
+                  <textarea name="content" class="form-control txtarea" cols="30" rows="10" placeholder="Content"></textarea><br>
                   <div style="display: flex;">
-                    <button class="btn btn-primary">Send Mail</button>
+                    <div style="display: flex;">
+                    <button class="btn btn-primary" onclick="showToast('Email Sent',3000)">Send Mail</button>
                     <div  style="margin-top: 5px;margin-left: 15px;">
                       <span class="material-icons"> micro </span>
                     </div>
+                  </div>
+                   
                   </div>
                 </form>
               </div>
@@ -138,7 +137,18 @@
                 document.getElementById("emailPopup").style.display = "none";
               };
 
+              function showToast(message,duration){
+                Toastify({
+                    text: message,
+                    duration: duration,
+                    close: true
+                }).showToast();
+              }
+
             </script>
+
+          
+        </div>
         <!-- Email List rows Ends -->
       </div>
       <!-- Email List Ends -->
