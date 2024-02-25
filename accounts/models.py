@@ -17,7 +17,9 @@ class Account(models.Model):
     pincode = models.CharField(max_length=6,null=True,blank=True)
     country = models.CharField(max_length=100,null=True,blank=True)
 
+    org_name = models.CharField(max_length=100,null=True,blank=True)
     api_key  = models.CharField(max_length=200,null=True,blank=True)
+    open_ai_api = models.CharField(max_length=200,null=True,blank=True)
     
     def __str__(self):
         return str(self.full_name)

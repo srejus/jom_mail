@@ -49,11 +49,6 @@ class SignupView(View):
         full_name = request.POST.get("full_name")
         email = request.POST.get("email")
         api_key = request.POST.get("api_key")
-        # pincode = request.POST.get("pincode")
-        # state = request.POST.get("state")
-        # country = request.POST.get("country")
-        # address = request.POST.get("address")
-        # user_type = request.POST.get("user_type")
         
         if password != password1:
             err = "Password not matching!"
@@ -70,11 +65,28 @@ class SignupView(View):
             return redirect(f"/accounts/signup?err={err}")
         
         user = User.objects.create_user(username=username,email=email,password=password)
-        acc = Account.objects.create(user=user,full_name=full_name,
-                                     api_key=api_key)
+        acc = Account.objects.create(user=user,full_name=full_name)
 
-        return redirect('/accounts/login')
+        return render(request,'org_save.html',{'acc':acc.id})
         
+
+class CreateOrgView(View):
+    def get(self,request):
+        return render(request,'org_save.html')
+    
+    def post(self,request):
+        org_name = request.POST.get("org_name")
+        open_ai_key = request.POST.get("open_ai_apikey")
+        supersent_api_key = request.POST.get("supersent_api")
+        acc_id = request.POST.get("acc")
+        
+        acc = Account.objects.get(id=acc_id)
+        acc.api_key = supersent_api_key
+        acc.org_name = org_name
+        acc.open_ai_api = open_ai_key
+        acc.save()
+
+        return redirect("/accounts/login/")
     
 
 class LogoutView(View):
