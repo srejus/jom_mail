@@ -62,7 +62,10 @@
           <h3>Drafts</h3>
         </div>
 
-        <div class="sidebarOption" onclick="window.location.href='/accounts/logout'">
+        <div class="sidebarOption" onclick="window.location.href='/contacts'">
+            <span class="material-icons"> phone</span>
+            <h3>Contacts</h3>
+          </div><div class="sidebarOption" onclick="window.location.href='/accounts/logout'">
             <span class="material-icons"> logout </span>
             <h3>Logout</h3>
           </div>
@@ -104,6 +107,50 @@
           </div> -->
           <!-- Email Row Ends -->
 
+
+          <script>
+            function rewriteAi(){
+                var content = document.getElementById('textInput').value;
+                var newContent = "Hello this is new content"
+                const options = {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({"content":content})
+                };
+                fetch('http://127.0.0.1:8000/rewrite', options)
+                  .then(response => {
+                    if (!response.ok) {
+                      throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                  })
+                  .then(data => {
+                    console.log('Response data:', data);
+                    document.getElementById('textInput').value = data.message;
+                  })
+                  .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                  });
+                // fetch('http://127.0.0.1:8000/rewrite')
+                //   .then(response => {
+                //     if (!response.ok) {
+                //       throw new Error('Network response was not ok');
+                //     }
+                //     // console.log(response.json());
+                //   })
+                //   .then(data => {
+                //     console.log('Data received:', data);
+                //     document.getElementById('textInput').value = data;
+                //   })
+                //   .catch(error => {
+                //     console.error('There was a problem with the fetch operation:', error);
+                //   });
+
+                console.log("Rewrite")
+            }
+          </script>
         
 
             <div id="emailPopup" class="popup">
@@ -113,9 +160,16 @@
                 <form action="/mail/new-email/" method="POST">
                   {% csrf_token %}
                   <input type="text" placeholder="subject" class="form-control" name="subject" required><br>
-                  <input type="email" placeholder="to" class="form-control" name="to" required><br>
+                  <input type="email" placeholder="to" class="form-control" name="to"><br>
+                  <label for="">Select Campaign</label>
+                  <select name="campaigns" id="" class="form-control">
+                    <option value="0"></option>
+                    {% for i in campaigns %}
+                    <option value="{{i.id}}">{{i.name}}</option>
+                    {% endfor %}
+                  </select><br>
                   <textarea name="content" id="textInput" class="form-control txtarea" cols="30" rows="10" placeholder="Content"></textarea><br>
-                  
+                  <button class="btn btn-secondary" type="button" onclick="rewriteAi()">Rewrite with AI</button>
                   <p id="log"></p>
                   <div style="display: flex;">
                     <div style="display: flex;">
@@ -123,6 +177,7 @@
                     <div  style="margin-top: 5px;margin-left: 15px;">
                       <span class="material-icons" id="toggleRecording"> micro </span>
                     </div>
+                
                   </div>
                    
                   </div>

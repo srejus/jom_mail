@@ -1,0 +1,220 @@
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Google Font Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'styles.css' %}"/>
+    <title>Jom Mail | Contacts</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'compose.css' %}">
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+  </head>
+  <body>
+    <!-- Header Starts -->
+    <div class="header">
+      <div class="header__left">
+        <span class="material-icons"> menu </span>
+       <h2>Jom Mail</h2>
+      </div>
+
+      <div class="header__middle">
+        <span class="material-icons"> search </span>
+        <input type="text" placeholder="Search mail" />
+        <span class="material-icons"> arrow_drop_down </span>
+      </div>
+
+      <div class="header__right">
+       
+        <span class="material-icons" style="font-size:40px;"> account_circle </span>
+      </div>
+    </div>
+    <!-- Header Ends -->
+
+    <!-- Main Body Starts -->
+    <div class="main__body">
+      <!-- Sidebar Starts -->
+      <div class="sidebar">
+        <button class="sidebar__compose" id="composeButton"><span class="material-icons"> add </span>Compose</button>
+        <div class="sidebarOption" onclick="window.location.href='/dashboard'">
+          <span class="material-icons"> inbox </span>
+          <h3>Inbox</h3>
+        </div>
+
+        <div class="sidebarOption">
+          <span class="material-icons"> star </span>
+          <h3>Starred</h3>
+        </div>
+
+
+        <div class="sidebarOption" onclick="window.location.href='/mail/sent'">
+          <span class="material-icons"> near_me </span>
+          <h3>Sent</h3>
+        </div>
+
+        <div class="sidebarOption" onclick="window.location.href='/mail/sent?type_=draft'">
+          <span class="material-icons"> note </span>
+          <h3>Drafts</h3>
+        </div>
+
+        <div class="sidebarOption sidebarOption__active" onclick="window.location.href='/contacts'">
+            <span class="material-icons"> phone</span>
+            <h3>Contacts</h3>
+          </div>
+          <ul style="margin-top: 15px;">
+            <li>
+              <a href="/contacts/add" style="color: black;margin-left: 45px;margin-top: 25px;">Add Contact</a>
+            </li>
+          </ul>
+          <div class="sidebarOption" onclick="window.location.href='/accounts/logout'">
+            <span class="material-icons"> logout </span>
+            <h3>Logout</h3>
+          </div>
+
+        
+        
+      </div>
+      <!-- Sidebar Ends -->
+
+      <!-- Email List Starts -->
+      <div class="emailList">
+  
+        <!-- Settings Starts -->
+        <div class="emailList__settings">
+          
+        </div>
+        <!-- Settings Ends -->
+
+
+        {% for contact in contacts %}
+
+        <!-- Email List rows starts -->
+        <div class="emailList__list">
+          <!-- Email Row Starts -->
+          <div class="emailRow">
+            <div class="emailRow__options">
+              
+              <span class="material-icons"> label_important </span>
+            </div>
+
+            <h3 class="emailRow__title">{{contact.full_name}}</h3>
+
+            <div class="emailRow__message">
+              <h6>
+                {{contact.email}}
+                <span class="emailRow__description"></span>
+              </h6>
+            </div>
+
+            <p class="emailRow__time">{{contact.created_at}}</p>
+            <span onclick="window.location.href='/contacts/delete/{{contact.id}}'"
+            class="material-icons" style="color: red;margin-top: -15px;margin-right: 15px;"> cancel</span>
+          </div>
+          <!-- Email Row Ends -->
+
+          {% endfor %}
+
+        
+
+           
+          <div id="emailPopup" class="popup">
+            <div class="popup-content">
+              <span class="close">&times;</span>
+              <h4>Compose New Email</h4>
+              <form action="/mail/new-email/" method="POST">
+                {% csrf_token %}
+                <input type="text" placeholder="subject" class="form-control" name="subject" required><br>
+                <input type="email" placeholder="to" class="form-control" name="to" required><br>
+                <textarea name="content" id="textInput" class="form-control txtarea" cols="30" rows="10" placeholder="Content"></textarea><br>
+                
+                <p id="log"></p>
+                <div style="display: flex;">
+                  <div style="display: flex;">
+                  <button class="btn btn-primary" onclick="showToast('Email Sent',3000)">Send Mail</button>
+                  <div  style="margin-top: 5px;margin-left: 15px;">
+                    <span class="material-icons" id="toggleRecording"> micro </span>
+                  </div>
+                </div>
+                 
+                </div>
+              </form>
+            </div>
+          </div>
+       
+          <script>
+            document.getElementById("composeButton").onclick = function() {
+              document.getElementById("emailPopup").style.display = "block";
+            };
+
+            document.querySelector(".close").onclick = function() {
+              document.getElementById("emailPopup").style.display = "none";
+            };
+
+            function showToast(message,duration){
+              Toastify({
+                  text: message,
+                  duration: duration,
+                  close: true
+              }).showToast();
+            }
+
+
+            // Voice capture and processing
+            // Check if browser supports the Web Speech API
+            if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+              const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+              let isRecording = false;
+
+              // Set continuous to true to keep listening
+              recognition.continuous = true;
+
+              // Handle the recognized result
+              recognition.onresult = function(event) {
+                  const last = event.results.length - 1;
+                  const text = event.results[last][0].transcript;
+
+                  // Log the recognized text to the console
+                  console.log('Recognized Text:', text);
+
+                  // Set the recognized text to the input field
+                  document.getElementById('textInput').value += text;
+              };
+
+              // Toggle recording when the button is clicked
+              var log = document.getElementById('log');
+              document.getElementById('toggleRecording').addEventListener('click', function() {
+                  if (isRecording) {
+                      recognition.stop();
+                      isRecording = false;
+                      console.log('Speech recognition stopped');
+                      log.innerText = 'Speech recognition stopped';
+                  } else {
+                      recognition.start();
+                      isRecording = true;
+                      console.log('Speech recognition started');
+                      log.innerText = 'Speech recognition started';
+                  }
+              });
+          } else {
+              // Web Speech API not supported, handle the error
+              alert('Your browser does not support Web Speech API');
+          }
+
+
+          </script>
+
+
+          
+        </div>
+        <!-- Email List rows Ends -->
+      </div>
+      <!-- Email List Ends -->
+    </div>
+    <!-- Main Body Ends -->
+  </body>
+</html>
