@@ -16,6 +16,7 @@ class Account(models.Model):
     state = models.CharField(max_length=50,null=True,blank=True)
     pincode = models.CharField(max_length=6,null=True,blank=True)
     country = models.CharField(max_length=100,null=True,blank=True)
+    wallet = models.FloatField(default=0.0)
 
     org_name = models.CharField(max_length=100,null=True,blank=True)
     api_key  = models.CharField(max_length=200,null=True,blank=True)

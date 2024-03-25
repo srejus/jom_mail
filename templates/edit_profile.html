@@ -7,7 +7,7 @@
     <!-- Google Font Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <link rel="stylesheet" href="{% static 'styles.css' %}"/>
-    <title>Jom Mail | Sent</title>
+    <title>Jom Mail | Edit Profile</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
     <link rel="stylesheet" href="{% static 'compose.css' %}">
 
@@ -46,9 +46,9 @@
           <h3>Inbox</h3>
         </div>
 
+       
 
-
-        <div class="sidebarOption sidebarOption__active" onclick="window.location.href='/mail/sent'">
+        <div class="sidebarOption" onclick="window.location.href='/mail/sent'">
           <span class="material-icons"> near_me </span>
           <h3>Sent</h3>
         </div>
@@ -81,39 +81,44 @@
       <div class="emailList">
         <!-- Settings Starts -->
         <div class="emailList__settings">
+
+          <style>
+            .profile-div{
+              padding: 15px;
+            }
+            .pro-pic{
+              width: 90px;
+              height: 90px;
+            }
+          </style>
           
         </div>
         <!-- Settings Ends -->
-
-       {% for email in emails %}
-
-        <!-- Email List rows starts -->
-        <div class="emailList__list" onclick="window.location.href='/mail/{{email.id}}'">
-          <!-- Email Row Starts -->
-          <div class="emailRow">
-            <div class="emailRow__options">
-              
-              <span class="material-icons"> label_important </span>
-            </div>
-
-            <h3 class="emailRow__title">{{email.to_email}}</h3>
-
-            <div class="emailRow__message">
-              <h6>
-                {{email.subject}}
-                <span class="emailRow__description"></span>
-              </h6>
-            </div>
-
-            <p class="emailRow__time">{{email.created_at}}</p>
+        <div style="height: 100vh;padding: 25px;">
+          <br><br><br><br>
+          <div class="profile-div">
+            <img src="https://ekhadiindia.s3.ap-south-1.amazonaws.com/img/avatar-place.png" class="pro-pic" alt="">
+            <br>
+            <h4>{{acc.full_name}}</h4><br><br>
+            <form action="" method="POST">
+              {% csrf_token %}
+            
+            <h6>Personal Information</h6><br>
+            <p>Phone: <input type="number" name="phone" style="height: 40px;" value="{{acc.phone}}" /></p>
+            <p>Email :  <input type="email" name="email" style="height: 40px;" value="{{acc.email}}" /></p>
+            <p>Address :  <input type="text" name="address" style="height: 40px;" value="{{acc.address}}" /></p>
+            <hr>
+              <h6>Credentials & Company</h6><br>
+              <p>Company Name :  <input type="text" name="org_name" style="height: 40px;" value="{{acc.org_name}}" /></p>
+            <p>Supersent Api :  <input type="text" name="api_key" style="height: 40px;" value="{{acc.api_key}}" /></p>
+            <p>Open AI api :  <input type="text" name="open_ai_api" style="height: 40px;" value="{{acc.open_ai_api}}" /></p>
+            
+            <button class="btn btn-danger">Update</button>
+          </form>
           </div>
-          <!-- Email Row Ends -->
-
-          
-
-          
+          <br><br><br><br>
         </div>
-        {% endfor %}
+
 
             
         <div id="emailPopup" class="popup">
@@ -202,6 +207,9 @@
 
         </script>
 
+
+          
+        </div>
         <!-- Email List rows Ends -->
       </div>
       <!-- Email List Ends -->

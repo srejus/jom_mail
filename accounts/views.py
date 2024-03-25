@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 from .models import *
+from voice_email.utils import create_stripe_payment_link
+
 
 # Create your views here.
 
@@ -93,3 +95,59 @@ class LogoutView(View):
     def get(self,request):
         logout(request)
         return redirect("/")
+   
+
+@method_decorator(login_required,name='dispatch')
+class ProfileView(View):
+    def get(self,request):
+        acc = Account.objects.get(user=request.user)
+        return render(request,'profile.html',{'acc':acc})
+    
+
+@method_decorator(login_required,name='dispatch')
+class EditProfileView(View):
+    def get(self,request):
+        acc = Account.objects.get(user=request.user)
+        return render(request,'edit_profile.html',{'acc':acc})
+    
+    def post(self,request):
+        acc = Account.objects.get(user=request.user)
+
+        phone = request.POST.get('phone')
+        email = request.POST.get('email')
+        address = request.POST.get('address')
+        org_name = request.POST.get('org_name')
+        api_key = request.POST.get('api_key')
+        open_ai_api = request.POST.get('open_ai_api')
+
+        acc.phone = phone
+        acc.email = email
+        acc.address = address
+        acc.api_key = api_key
+        acc.open_ai_api = open_ai_api
+        acc.org_name = org_name
+
+        acc.save()
+        return redirect("/accounts/profile")
+    
+
+@method_decorator(login_required,name='dispatch')
+class RechargeWalletView(View):
+    def get(self,request):
+        return render(request,"recharge.html")
+    
+    def post(self,request):
+        amount = request.POST.get("amount")
+        print("Amount : ",amount)
+        pay_url = create_stripe_payment_link(amount)
+        print("pay_url : ",pay_url)
+        return redirect(pay_url)
+
+
+@method_decorator(login_required,name='dispatch')
+class SuccessView(View):
+    def get(self,request):
+        acc = Account.objects.get(user=request.user)
+        acc.wallet += float(request.GET.get("amt"))
+        acc.save()
+        return redirect("/accounts/profile")

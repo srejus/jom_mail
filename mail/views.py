@@ -21,7 +21,12 @@ class CreateNewMail(View):
         content = request.POST.get("content")
         
         acc = Account.objects.get(user=request.user)
-
+        if acc.wallet < 2:
+            msg = "Insufficient Wallet Balance!"
+            return redirect(f"/?msg={msg}")
+        
+        acc.wallet = acc.wallet - 2
+        acc.save()
 
         if not to_email and campaigns == '0':
             return redirect("/mail/sent")
