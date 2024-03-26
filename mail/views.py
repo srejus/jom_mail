@@ -73,7 +73,7 @@ class SentMailView(View):
             emails = History.objects.filter(user=request.user,status='DRAFT')
             return render(request,'draft.html',{'emails':emails})
         
-        emails = History.objects.filter(user=request.user,status__in=['SENT','READ'])
+        emails = History.objects.filter(user=request.user,status__in=['SENT','READ']).order_by('-id')
         return render(request,"sent.html",{'emails':emails})
     
 
