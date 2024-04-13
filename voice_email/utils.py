@@ -1,8 +1,8 @@
 import stripe
 
 
-STRIPE_PUBLIC_KEY = '' # change this
-STRIPE_SECRET_KEY = '' # change this
+STRIPE_PUBLIC_KEY = 'pk_test_51OyRANSE615NBgftHqTOK0erhWj7ff4IXrXPkyPjjrw02CXcAeZs6abbkOfuUAcottmNSES83mTTPXKQ5CFVSWJC00uDNnnnfw' # change this
+STRIPE_SECRET_KEY = 'sk_test_51OyRANSE615NBgftGE7BbVa53hyvZ9sVsusIS31tKBnnUmx3Sn7LgJnMxQ4b1t1XyUBN9V3auy7ggK8DYQvSBTzo00eeFz9vFB' # change this
 
 
 def create_stripe_payment_link(amount):

@@ -163,6 +163,9 @@
                 <form action="/mail/new-email/" method="POST">
                   {% csrf_token %}
                   <input type="text" placeholder="subject" class="form-control" name="subject" required><br>
+
+                  <label for="">Scheduled Date</label>
+                  <input type="datetime-local" placeholder="subject" class="form-control" name="time"><br>
                   <input type="email" placeholder="to" class="form-control" name="to"><br>
                   <label for="">Select Campaign</label>
                   <select name="campaigns" id="" class="form-control">
@@ -171,7 +174,7 @@
                     <option value="{{i.id}}">{{i.name}}</option>
                     {% endfor %}
                   </select><br>
-                  <textarea name="content" id="textInput" class="form-control txtarea" cols="30" rows="10" placeholder="Content"></textarea><br>
+                  <textarea name="content" id="textInput" class="form-control txtarea" cols="30" rows="10" placeholder="Content" style="height: 140px;"></textarea><br>
                   <button class="btn btn-secondary" type="button" onclick="rewriteAi()">Rewrite with AI</button>
                   <p id="log"></p>
                   <div style="display: flex;">
@@ -179,6 +182,7 @@
                     <button class="btn btn-primary" onclick="showToast('Email Sent',3000)">Send Mail</button>
                     <div  style="margin-top: 5px;margin-left: 15px;">
                       <span class="material-icons" id="toggleRecording"> micro </span>
+                      <button class="btn btn-primary" onclick="window.location.href='/upload'">Upload CSV</button>
                     </div>
                 
                   </div>

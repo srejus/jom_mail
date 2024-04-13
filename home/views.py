@@ -89,3 +89,65 @@ class RewriteView(View):
     def post(self,request):
         content = request.GET.get("content")
         return JsonResponse({"message":"New Content"})
+
+
+import pandas as pd  
+from mail.models import History
+import requests
+from django.conf import settings
+
+@method_decorator(login_required,name='dispatch')
+class UploadView(View):
+    def get(self,request):
+        err = request.GET.get("err")
+        return render(request,'upload.html',{'err':err})
+    
+    def post(self, request):
+        file = request.FILES.get("file")
+        acc = Account.objects.get(user=request.user)
+        
+        # Check if a file was uploaded
+        if file is not None:
+            # Read the CSV file into a DataFrame using pandas
+            try:
+                df = pd.read_csv(file)
+            except pd.errors.EmptyDataError:
+                err = "Uploaded file is Empty"
+                return redirect(f"/upload?err={err}")
+            except pd.errors.ParserError:
+                err = "Error parsing the CSV file"
+                return redirect(f"/upload?err={err}")
+            
+            # Loop through each row and print the fields
+            for index, row in df.iterrows():
+                to = row['to']
+                subject = row['subject']
+                content = row['content']
+                
+                print("To:", to)
+                print("Subject:", subject)
+                print("Content:", content)
+                print("\n")
+
+                # sending email
+                history = History.objects.create(user=request.user,subject=subject,content=content,to_email=to)
+                data = {
+                    "subject":subject,
+                    "to_email":to,
+                    "context":{
+                        "message":content
+                    },
+                    "api_key":acc.api_key,
+                    "identifier":str(history.id)
+                }
+                
+                res = requests.post(url=settings.SUPERSENT_URL,headers={},json=data)
+                print("res -> ",res.json())
+
+            
+            # Redirect to dashboard after processing
+            return redirect("/dashboard")
+        else:
+            err = "No file Uploaded"
+            return redirect(f"/upload?err={err}")
+

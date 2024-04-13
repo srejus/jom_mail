@@ -14,4 +14,5 @@ class History(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     is_stared = models.BooleanField(default=False)
+    total_opened = models.IntegerField(default=0)
     status = models.CharField(max_length=15,default='SENT')
