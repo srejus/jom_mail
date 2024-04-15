@@ -1,8 +1,21 @@
 import stripe
 
+from django.template.loader import get_template
+from django.template import Context
+from django.utils.html import linebreaks
 
-STRIPE_PUBLIC_KEY = 'pk_test_51OyRANSE615NBgftHqTOK0erhWj7ff4IXrXPkyPjjrw02CXcAeZs6abbkOfuUAcottmNSES83mTTPXKQ5CFVSWJC00uDNnnnfw' # change this
-STRIPE_SECRET_KEY = 'sk_test_51OyRANSE615NBgftGE7BbVa53hyvZ9sVsusIS31tKBnnUmx3Sn7LgJnMxQ4b1t1XyUBN9V3auy7ggK8DYQvSBTzo00eeFz9vFB' # change this
+
+STRIPE_PUBLIC_KEY = 'pk_test_51NwJLmSIPysML8WMJNFhx75blOYkWteVi5QhkbW9uK8nO6BGZlyqiQ8oYCk8ERmHcj8AyNlid3g9S6A2pYf57D3n00nEJFtGKL' # change this
+STRIPE_SECRET_KEY = 'sk_test_51NwJLmSIPysML8WMXUqC8NV6nDdQ9iWIdaby9LoKNtWeI8vuZ6QUMTKqqef4ja9NvjZyj2IaQuMokUAfMamL40cC00D7ZfDTox' # change this
+
+
+
+def render_email_template(context, template):
+    # template = get_template(template_name)
+    # context = Context(context)
+    rendered_message = template
+    rendered_message_with_linebreaks = linebreaks(rendered_message)
+    return rendered_message
 
 
 def create_stripe_payment_link(amount):

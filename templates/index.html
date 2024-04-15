@@ -31,6 +31,12 @@
 
 </head>
 
+<style>
+  #lgn:hover{
+    font-size: 20px;
+  }
+</style>
+
 <body>
 
   <div class="hero_area">
@@ -53,7 +59,7 @@
                 <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="about.html"> About</a>
+                <a class="nav-link" href="/#about"> About</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="/dashboard">Dashboard</a>
@@ -68,16 +74,12 @@
           </div>
           <div class="quote_btn-container">
             <a href="/accounts/login/">
-              <span>
+              <span id="lgn">
                 Login
               </span>
               <i class="fa fa-user" aria-hidden="true"></i>
             </a>
-            <form class="form-inline">
-              <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
-                <i class="fa fa-search" aria-hidden="true"></i>
-              </button>
-            </form>
+            
           </div>
         </div>
       </nav>
@@ -103,7 +105,7 @@
                       <a href="#contactus" class="btn1">
                         Contact Us
                       </a>
-                      <a href="" class="btn2">
+                      <a href="/#about" class="btn2">
                         About Us
                       </a>
                     </div>
@@ -133,7 +135,7 @@
                       <a href="" class="btn1">
                         Contact Us
                       </a>
-                      <a href="" class="btn2">
+                      <a href="/#about" class="btn2">
                         About Us
                       </a>
                     </div>
@@ -163,7 +165,7 @@
                       <a href="" class="btn1">
                         Contact Us
                       </a>
-                      <a href="" class="btn2">
+                      <a href="/#about" class="btn2">
                         About Us
                       </a>
                     </div>
@@ -192,7 +194,7 @@
 
   <!-- about section -->
 
-  <section class="about_section layout_padding long_section">
+  <section class="about_section layout_padding long_section" id="about">
     <div class="container">
       <div class="row">
         <div class="col-md-6">
@@ -333,18 +335,19 @@
                 Contact Us
               </h2>
             </div>
-            <form action="">
+            <form action="" method="POST">
+              {% csrf_token %}
               <div>
-                <input type="text" placeholder="Your Name" />
+                <input name="name" type="text" placeholder="Your Name" />
               </div>
               <div>
-                <input type="text" placeholder="Phone Number" />
+                <input name="phone" type="text" placeholder="Phone Number" />
               </div>
               <div>
-                <input type="email" placeholder="Email" />
+                <input name="email" type="email" placeholder="Email" />
               </div>
               <div>
-                <input type="text" class="message-box" placeholder="Message" />
+                <input name="message" type="text" class="message-box" placeholder="Message" />
               </div>
               <div class="btn_box">
                 <button>
@@ -400,7 +403,7 @@
               </h4>
               <div class="info_links_menu">
                 <a class="" href="/">Home <span class="sr-only">(current)</span></a>
-                <a class="" href="about.html"> About</a>
+                <a class="" href="/#about"> About</a>
                 <a class="" href="dashboard">Dashboard</a>
                 <a class="" href="blog.html">Blog</a>
                 <a class="" href="contact.html">Contact Us</a>
@@ -479,6 +482,15 @@
     </div>
   </footer>
   <!-- footer section -->
+
+  {% if msg %}
+
+  <script>
+    alert('{{msg}}');
+    window.location.href = '/';
+  </script>
+
+  {%  endif %}
 
 
   <!-- jQery -->

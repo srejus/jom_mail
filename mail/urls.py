@@ -5,4 +5,6 @@ urlpatterns = [
     path('<int:id>',ReadMailView.as_view()),
     path('new-email/',CreateNewMail.as_view()),
     path('sent',SentMailView.as_view()),
+    path('sent/delete/<int:id>',DeleteSentMailView.as_view()),
+    
 ]

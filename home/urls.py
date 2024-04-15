@@ -16,4 +16,6 @@ urlpatterns = [
     path('rewrite',RewriteView.as_view()),
 
     path('upload',UploadView.as_view()),
+
+    path('templates',TemplateView.as_view()),
 ]

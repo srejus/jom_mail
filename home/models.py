@@ -26,3 +26,12 @@ class Campaign(models.Model):
 class CampaignContacts(models.Model):
     campaign = models.ForeignKey(Campaign,on_delete=models.CASCADE,related_name='campaign_contact')
     contact = models.ForeignKey(Contact,on_delete=models.CASCADE)
+
+
+
+
+class IndexContact(models.Model):
+    name = models.CharField(max_length=100,null=True,blank=True)
+    phone = models.CharField(max_length=20,null=True,blank=True)
+    email = models.EmailField(null=True,blank=True)
+    message = models.TextField(null=True,blank=True)

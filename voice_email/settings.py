@@ -17,7 +17,8 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
-CSRF_TRUSTED_ORIGINS = ['https://b1cf-103-165-167-24.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = ['https://b1cf-103-165-167-24.ngrok-free.app',
+                        'https://0c33-103-148-21-217.ngrok-free.app']
 
 
 # Application definition
@@ -31,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'mail',
+    'ckeditor',
     'home',
     'accounts',
 ]

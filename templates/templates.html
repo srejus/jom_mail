@@ -7,7 +7,7 @@
     <!-- Google Font Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <link rel="stylesheet" href="{% static 'styles.css' %}"/>
-    <title>Jom Mail</title>
+    <title>Jom Mail | Templates</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
     <link rel="stylesheet" href="{% static 'compose.css' %}">
 
@@ -123,37 +123,219 @@
 
       <!-- Email List Starts -->
       <div class="emailList">
-        <br>
-        <!-- Settings Starts -->
-        <div class="mrow">
-            <div class="card mcard">
-              <span class="material-icons"> email</span>
-              Total Email Sent <br>
-              {{total_emails}}
-            </div>
+        <div class="card p-3 m-3" style="border: 1px solid black;height: 550px;overflow-y: scroll;">
+          <h4><b>Marketing Email Sample</b></h4><br>
 
-
-            <div class="card mcard">
-              <span class="material-icons"> campaign</span>
-              Total Campaigns Created <br>
-              {{camp}}
-            </div>
-
-
-            <div class="card mcard">
-              <span class="material-icons"> visibility</span>
-              Total Email Read <br>
-              {{read}}
-            </div>
-
-
-            <div class="card mcard">
-              <span class="material-icons"> money</span>
-              Wallet Balance <br>
-              {{wallet}} Rs
-            </div>
+          <hr>
+          <pre><code id="emailMarketingCode">&lt;!DOCTYPE html&gt;
+            &lt;html lang="en"&gt;
+            &lt;head&gt;
+            &lt;meta charset="UTF-8"&gt;
+            &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+            &lt;title&gt;Email Marketing Email Template&lt;/title&gt;
+            &lt;style&gt;
+                /* Reset styles */
+                body, html {
+                    margin: 0;
+                    padding: 0;
+                    font-family: Arial, sans-serif;
+                    font-size: 16px;
+                    line-height: 1.6;
+                }
+                img {
+                    max-width: 100%;
+                    height: auto;
+                }
+            &lt;/style&gt;
+            &lt;/head&gt;
+            &lt;body&gt;
             
+            &lt;table align="center" width="600" cellspacing="0" cellpadding="0" border="0"&gt;
+                &lt;tr&gt;
+                    &lt;td style="background-color: #f8f8f8; padding: 20px;"&gt;
+                        &lt;h1 style="color: #333;"&gt;Check Out Our Latest Offer!&lt;/h1&gt;
+                        &lt;p style="color: #666;"&gt;Dear valued customer, we're excited to offer you our latest promotion:&lt;/p&gt;
+                        &lt;p style="color: #666;"&gt;50% off on selected items for a limited time only! Don't miss out!&lt;/p&gt;
+                        &lt;p style="color: #666;"&gt;Visit our website to shop now: &lt;a href="https://example.com" style="color: #007bff;"&gt;example.com&lt;/a&gt;&lt;/p&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td style="background-color: #333; color: #fff; text-align: center; padding: 20px;"&gt;
+                        &lt;p&gt;&amp;copy; 2024 Company Name. All rights reserved.&lt;/p&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/table&gt;
+            
+            &lt;/body&gt;
+            &lt;/html&gt;
+            </code></pre>
+            
+            <button class="btn btn-primary" onclick="copyEmailMarketingCode()">Copy Code</button>
+            
+            <script>
+            function copyEmailMarketingCode() {
+                var code = document.getElementById('emailMarketingCode').innerText;
+                navigator.clipboard.writeText(code)
+                    .then(() => {
+                        alert('Code copied to clipboard!');
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy code: ', err);
+                    });
+            }
+            </script>
+            
+          </div>
+
+        <div class="card p-3 m-3" style="border: 1px solid black;height: 550px;overflow-y: scroll;">
+          <h4><b>Welcome Email Sample</b></h4><br>
+
+          <hr>
+
+          <pre><code id="htmlCode">&lt;!DOCTYPE html&gt;
+            &lt;html lang="en"&gt;
+            &lt;head&gt;
+            &lt;meta charset="UTF-8"&gt;
+            &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+            &lt;title&gt;Email Template&lt;/title&gt;
+            &lt;style&gt;
+                /* Reset styles */
+                body, html {
+                    margin: 0;
+                    padding: 0;
+                    font-family: Arial, sans-serif;
+                    font-size: 16px;
+                    line-height: 1.6;
+                }
+                img {
+                    max-width: 100%;
+                    height: auto;
+                }
+            &lt;/style&gt;
+            &lt;/head&gt;
+            &lt;body&gt;
+            
+            &lt;table align="center" width="600" cellspacing="0" cellpadding="0" border="0"&gt;
+                &lt;tr&gt;
+                    &lt;td style="background-color: #f8f8f8; padding: 20px;"&gt;
+                        &lt;h1 style="color: #333;"&gt;Welcome to Our Newsletter!&lt;/h1&gt;
+                        &lt;p style="color: #666;"&gt;Thank you for subscribing to our newsletter. Here's what's new:&lt;/p&gt;
+                        &lt;ul style="color: #666;"&gt;
+                            &lt;li&gt;New product launches&lt;/li&gt;
+                            &lt;li&gt;Exclusive offers&lt;/li&gt;
+                            &lt;li&gt;Exciting updates&lt;/li&gt;
+                        &lt;/ul&gt;
+                        &lt;p style="color: #666;"&gt;Stay tuned for more updates!&lt;/p&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td style="background-color: #333; color: #fff; text-align: center; padding: 20px;"&gt;
+                        &lt;p&gt;&amp;copy; 2024 Company Name. All rights reserved.&lt;/p&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/table&gt;
+            
+            &lt;/body&gt;
+            &lt;/html&gt;
+            </code></pre>
+            
+            <button onclick="copyCode()" class="btn btn-primary">Copy Code</button>
+
+ 
+            <script>
+            function copyCode() {
+                var code = document.getElementById('htmlCode').innerText;
+                navigator.clipboard.writeText(code)
+                    .then(() => {
+                        alert('Code copied to clipboard!');
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy code: ', err);
+                    });
+            }
+            </script>
         </div>
+      
+            
+        <br><br>
+
+
+
+        <div class="card p-3 m-3" style="border: 1px solid black;height: 550px;overflow-y: scroll;">
+          <h4><b>OTP Email Sample</b></h4><br>
+
+          <hr>
+        
+<pre><code id="otpCode">&lt;!DOCTYPE html&gt;
+  &lt;html lang="en"&gt;
+  &lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;OTP Email Template&lt;/title&gt;
+  &lt;style&gt;
+      /* Reset styles */
+      body, html {
+          margin: 0;
+          padding: 0;
+          font-family: Arial, sans-serif;
+          font-size: 16px;
+          line-height: 1.6;
+      }
+      img {
+          max-width: 100%;
+          height: auto;
+      }
+  &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+  
+  &lt;table align="center" width="600" cellspacing="0" cellpadding="0" border="0"&gt;
+      &lt;tr&gt;
+          &lt;td style="background-color: #f8f8f8; padding: 20px;"&gt;
+              &lt;h1 style="color: #333;"&gt;Your OTP&lt;/h1&gt;
+              &lt;p style="color: #666;"&gt;Your OTP is: &lt;b&gt;123456&lt;/b&gt;&lt;/p&gt;
+              &lt;p style="color: #666;"&gt;Please use this OTP to complete your verification.&lt;/p&gt;
+          &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style="background-color: #333; color: #fff; text-align: center; padding: 20px;"&gt;
+              &lt;p&gt;&amp;copy; 2024 Company Name. All rights reserved.&lt;/p&gt;
+          &lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/table&gt;
+  
+  &lt;/body&gt;
+  &lt;/html&gt;
+  </code></pre>
+  
+  <button onclick="copyOTPCode()" class="btn btn-primary">Copy Code</button>
+  
+  <script>
+  function copyOTPCode() {
+      var code = document.getElementById('otpCode').innerText;
+      navigator.clipboard.writeText(code)
+          .then(() => {
+              alert('Code copied to clipboard!');
+          })
+          .catch(err => {
+              console.error('Failed to copy code: ', err);
+          });
+  }
+  </script>
+        </div>
+        <br><br>
+
+
+
+
+
+
+
+
+        </div>
+
+       
+        <br><br>
         <!-- Settings Ends -->
 
        

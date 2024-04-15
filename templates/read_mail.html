@@ -43,7 +43,7 @@
         <button class="sidebar__compose" id="composeButton"><span class="material-icons"> add </span>Compose</button>
         <div class="sidebarOption" onclick="window.location.href='/dashboard'">
           <span class="material-icons"> inbox </span>
-          <h3>Inbox</h3>
+          <h3>Dashboard</h3>
         </div>
 
        
@@ -53,14 +53,19 @@
           <h3>Sent</h3>
         </div>
 
-        <div class="sidebarOption" onclick="window.location.href='/mail/sent?type_=draft'">
+         <!-- <div class="sidebarOption" onclick="window.location.href='/mail/sent?type_=draft'">
           <span class="material-icons"> note </span>
           <h3>Drafts</h3>
-        </div>
+        </div> -->
 
         <div class="sidebarOption" onclick="window.location.href='/contacts'">
             <span class="material-icons"> phone</span>
             <h3>Contacts</h3>
+            
+          </div>
+          <div class="sidebarOption" onclick="window.location.href='/templates'">
+            <span class="material-icons"> campaign</span>
+            <h3>Templates</h3>
             
           </div>
           <div class="sidebarOption" onclick="window.location.href='/campaign'">
@@ -93,29 +98,84 @@
 
 
             
-        <div id="emailPopup" class="popup">
-          <div class="popup-content">
-            <span class="close">&times;</span>
-            <h4>Compose New Email</h4>
-            <form action="/mail/new-email/" method="POST">
-              {% csrf_token %}
-              <input type="text" placeholder="subject" class="form-control" name="subject" required><br>
-              <input type="email" placeholder="to" class="form-control" name="to" required><br>
-              <textarea name="content" id="textInput" class="form-control txtarea" cols="30" rows="10" placeholder="Content"></textarea><br>
-              
-              <p id="log"></p>
-              <div style="display: flex;">
+        <script>
+          function rewriteAi(){
+              var content = document.getElementById('textInput').value;
+              var newContent = "Hello this is new content"
+              const options = {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({"content":content})
+              };
+              fetch('http://127.0.0.1:8000/rewrite', options)
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                  }
+                  return response.json();
+                })
+                .then(data => {
+                  console.log('Response data:', data);
+                  document.getElementById('textInput').value = data.message;
+                })
+                .catch(error => {
+                  console.error('There was a problem with the fetch operation:', error);
+                });
+              // fetch('http://127.0.0.1:8000/rewrite')
+              //   .then(response => {
+              //     if (!response.ok) {
+              //       throw new Error('Network response was not ok');
+              //     }
+              //     // console.log(response.json());
+              //   })
+              //   .then(data => {
+              //     console.log('Data received:', data);
+              //     document.getElementById('textInput').value = data;
+              //   })
+              //   .catch(error => {
+              //     console.error('There was a problem with the fetch operation:', error);
+              //   });
+
+              console.log("Rewrite")
+          }
+        </script>
+      
+
+          <div id="emailPopup" class="popup">
+            <div class="popup-content">
+              <span class="close">&times;</span>
+              <h4>Compose New Email</h4>
+              <form action="/mail/new-email/" method="POST">
+                {% csrf_token %}
+                <input type="text" placeholder="subject" class="form-control" name="subject" required><br>
+
+                <input type="email" placeholder="to" class="form-control" name="to"><br>
+                <label for="">Select Campaign</label>
+                <select name="campaigns" id="" class="form-control">
+                  <option value="0"></option>
+                  {% for i in campaigns %}
+                  <option value="{{i.id}}">{{i.name}}</option>
+                  {% endfor %}
+                </select><br>
+                <textarea name="content" id="textInput" class="form-control txtarea" cols="30" rows="10" placeholder="Content" style="height: 140px;"></textarea><br>
+                <button class="btn btn-secondary" type="button" onclick="rewriteAi()">Rewrite with AI</button>
+                <p id="log"></p>
                 <div style="display: flex;">
-                <button class="btn btn-primary" onclick="showToast('Email Sent',3000)">Send Mail</button>
-                <div  style="margin-top: 5px;margin-left: 15px;">
-                  <span class="material-icons" id="toggleRecording"> micro </span>
+                  <div style="display: flex;">
+                  <button class="btn btn-primary" onclick="showToast('Email Sent',3000)">Send Mail</button>
+                  <div  style="margin-top: 5px;margin-left: 15px;">
+                    <span class="material-icons" id="toggleRecording"> micro </span>
+                    <button class="btn btn-primary" onclick="window.location.href='/upload'">Upload CSV</button>
+                  </div>
+              
                 </div>
-              </div>
-               
-              </div>
-            </form>
+                 
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
      
         <script>
           document.getElementById("composeButton").onclick = function() {

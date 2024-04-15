@@ -10,6 +10,7 @@ from django.utils.decorators import method_decorator
 from .models import History
 from accounts.models import Account
 from home.models import *
+from voice_email.utils import render_email_template
 
 # Create your views here.
 @method_decorator(login_required, name='dispatch')
@@ -54,6 +55,11 @@ class CreateNewMail(View):
             return redirect("/mail/sent")
 
         history = History.objects.create(user=request.user,subject=subject,content=content,to_email=to_email)
+        
+        content = render_email_template({},content)
+
+        print("Content : ",content,"> ",str(history.id))
+
         data = {
             "subject":subject,
             "to_email":to_email,
@@ -61,7 +67,8 @@ class CreateNewMail(View):
                 "message":content
             },
             "api_key":acc.api_key,
-            "identifier":str(history.id)
+            "identifier":str(history.id),
+            "is_template_email":True
         }
         
         res = requests.post(url=settings.SUPERSENT_URL,headers={},json=data)
@@ -81,14 +88,16 @@ class SentMailView(View):
             return render(request,'star.html',{'emails':emails})
         elif type_ == 'draft':
             emails = History.objects.filter(user=request.user,status='DRAFT')
-            return render(request,'draft.html',{'emails':emails})
+            campaigns = Campaign.objects.filter(user__user=request.user)
+            return render(request,'draft.html',{'emails':emails,'campaigns':campaigns})
         
+        campaigns = Campaign.objects.filter(user__user=request.user)
         emails = History.objects.filter(user=request.user,status__in=['SENT','READ']).order_by('-id')
         
         # call read api to update status
         acc = Account.objects.get(user=request.user)
         update_read_status(acc)
-        return render(request,"sent.html",{'emails':emails})
+        return render(request,"sent.html",{'emails':emails,'campaigns':campaigns})
     
 
 @method_decorator(login_required, name='dispatch')
@@ -96,3 +105,10 @@ class ReadMailView(View):
     def get(self,request,id):
         email = History.objects.get(id=id)
         return render(request,'read_mail.html',{'email':email})
+    
+
+@method_decorator(login_required,name='dispatch')
+class DeleteSentMailView(View):
+    def get(self,request,id=None):
+        History.objects.get(id=id).delete()
+        return redirect("/mail/sent")

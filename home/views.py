@@ -13,21 +13,41 @@ from accounts.models import Account
 # Create your views here.
 class IndexView(View):
     def get(self,request):
-        return render(request,'index.html')
+        msg = request.GET.get("msg")
+        return render(request,'index.html',{'msg':msg})
+    
+    def post(self,request):
+        name = request.POST.get("name")
+        phone = request.POST.get("phone")
+        email = request.POST.get("email")
+        message = request.POST.get("message")
+
+        IndexContact.objects.create(name=name,email=email,phone=phone,message=message)
+        msg = "Form Submitted Successfully!"
+        return redirect(f"/?msg={msg}")
     
 
 @method_decorator(login_required, name='dispatch')
 class DashboardView(View):
     def get(self,request):
+        emails = History.objects.all()
+        total_emails = emails.count()
+        total_camp = Campaign.objects.all().count()
+        wallet = Account.objects.get(user=request.user).wallet
+        total_read = emails.filter(total_opened__gt=0).count()
+        
         campaigns = Campaign.objects.filter(user__user=request.user)
-        return render(request,'dashboard.html',{'campaigns':campaigns})
+        return render(request,'dashboard.html',{'campaigns':campaigns,
+                                                'total_emails':total_emails,'camp':total_camp,
+                                                'wallet':wallet,'read':total_read})
     
 
 @method_decorator(login_required,name='dispatch')
 class ContactView(View):
     def get(self,request):
+        campaigns = Campaign.objects.filter(user__user=request.user)
         contacts = Contact.objects.filter(user__user=request.user)
-        return render(request,'contacts.html',{'contacts':contacts})
+        return render(request,'contacts.html',{'contacts':contacts,'campaigns':campaigns})
     
 
 @method_decorator(login_required,name='dispatch')
@@ -151,3 +171,8 @@ class UploadView(View):
             err = "No file Uploaded"
             return redirect(f"/upload?err={err}")
 
+
+
+class TemplateView(View):
+    def get(self,request):
+        return render(request,'templates.html')
