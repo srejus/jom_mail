@@ -18,4 +18,6 @@ urlpatterns = [
     path('upload',UploadView.as_view()),
 
     path('templates',TemplateView.as_view()),
+
+    path('register',RegisterOrgView.as_view()),
 ]

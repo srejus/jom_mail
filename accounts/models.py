@@ -24,3 +24,17 @@ class Account(models.Model):
     
     def __str__(self):
         return str(self.full_name)
+    
+
+class Organization(models.Model):
+    STATUS_CHOICES = (
+        ('created','created'),
+        ('accepted','accepted'),
+        ('rejected','rejected'),
+    )
+
+    org_name = models.CharField(max_length=100)
+    email_id = models.EmailField(null=True,blank=True)
+    org_address = models.CharField(max_length=150,null=True,blank=True)
+    approve_status = models.CharField(max_length=100,default='created',choices=STATUS_CHOICES)
+    created_at = models.DateTimeField(auto_now_add=True)

@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 
 from .models import *
-from accounts.models import Account
+from accounts.models import Account,Organization
 
 
 # Create your views here.
@@ -176,3 +176,19 @@ class UploadView(View):
 class TemplateView(View):
     def get(self,request):
         return render(request,'templates.html')
+    
+
+
+class RegisterOrgView(View):
+    def get(self,request):
+        return render(request,'register.html')
+    
+    def post(self,request):
+        org_name = request.POST.get("org_name")
+        email_id = request.POST.get("email_id")
+        address = request.POST.get("address")
+
+        Organization.objects.create(org_name=org_name,email_id=email_id,org_address=address)
+
+        msg = "Organization created successfully!"
+        return redirect(f"/?msg={msg}")
